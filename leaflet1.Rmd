@@ -1,0 +1,75 @@
+---
+title: "leaflet1"
+author: "Rob Gordon"
+date: "December 16, 2015"
+output: 
+  html_document: 
+    toc: yes
+---
+
+## Leaflet
+
+The map below displays locations around Atlanta where FGC events occur. Features include
+
+- Zoom-in/Zoom-out
+- Clicking on locations pops up the name of the event and address.
+- Within the pop-up, clicking on the name leads to the url of the event website.
+
+The map below relies on google maps to geocode addresses. Note that in most cases by using this library you are agreeing to the Google Maps API Terms of Service at https://developers.google.com/maps/terms.
+
+```{r, echo=FALSE, message=FALSE}
+library('ggmap')
+fr19 <- geocode("1031 Virginia Avenue, Atlanta, GA 30354", source="google")
+fr19content <- paste(sep = "<br/>",
+  "<b><a href='http://www.finalround.org'>Final Round</a></b>",
+  "1031 Virginia Avenue",
+  "Atlanta, GA 30354"
+)
+  
+gb <- geocode("3700 Satellite Blvd, # 7B, Duluth, Georgia 30096", source="google")
+gbcontent <- paste(sep = "<br/>",
+  "<b><a href='https://www.facebook.com/GBrawl'>Gwinnett Brawl</a></b>",
+  "3700 Satellite Blvd, # 7B",
+  "Duluth, Georgia 30096"
+)
+
+gt <- geocode("266 Ferst Dr NW, Atlanta, Georgia 30332", source="google")
+gtcontent <- paste(sep = "<br/>",
+  "<b><a href='https://www.facebook.com/gtfridayfighting/'>Ga Tech Friday Night Casuals</a></b>",
+  "266 Ferst Dr NW",
+  "Atlanta, Georgia 30332"
+)
+
+yomi <- geocode("643 Shelton Ave SW, Atlanta, Georgia 30310", source="google")
+yomicontent <- paste(sep = "<br/>",
+  "<b><a href='https://www.facebook.com/yomigaming/'>Yomi Gaming</a></b>",
+  "643 Shelton Ave SW",
+  "Atlanta, Georgia 30310"
+)
+
+gx <- geocode("6981 Main St., Lithonia, GA 30058", source="google")
+gxcontent <- paste(sep = "<br/>",
+  "<b><a href='https://www.facebook.com/GxGamer?fref=ts'>Gx Gaming</a></b>",
+  "6981 Main St.",
+  "Lithonia, GA 30058"
+)
+
+uldr <- geocode("2423 Lake Harbin Rd, Morrow, Georgia 30260", source="google")
+uldrcontent <- paste(sep = "<br/>",
+  "<b><a href='https://www.facebook.com/UDLRcustoms/'>U.L.D.R. Customs</a></b>",
+  "2423 Lake Harbin Rd",
+  "Morrow, Georgia 30260"
+)
+  
+library('leaflet')
+m <- leaflet() %>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+  addMarkers(lng=fr19$lon, lat=fr19$lat, popup=fr19content) %>%
+  addMarkers(lng=gb$lon, lat=gb$lat, popup=gbcontent) %>%
+  addMarkers(lng=gt$lon, lat=gt$lat, popup=gtcontent) %>%
+  addMarkers(lng=yomi$lon, lat=yomi$lat, popup=yomicontent) %>%
+  addMarkers(lng=gx$lon, gx$lat, popup=gxcontent) %>%
+  addMarkers(lng=uldr$lon, uldr$lat, popup=uldrcontent)
+m  # Print the map
+```
+
